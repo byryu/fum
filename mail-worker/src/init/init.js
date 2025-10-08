@@ -50,7 +50,7 @@ const init = {
 	},
 
 	async v1_6DB(c) {
-		const noticeContent = '禁止非法使用\n' +
+		const noticeContent = '禁止非法使用' +
 			'<br>\n' +
 			'作者不承擔任何法律責任\n';
 
@@ -81,15 +81,13 @@ const init = {
 		const promises = ADD_COLUMN_SQL_LIST.map(async (sql) => {
 			try {
 				await c.env.db.prepare(sql).run();
-			} catch {}
+			} catch (e) {
+				console.warn(`通过字段，原因：${e.message}`);
+			}
 		});
 
 		await Promise.all(promises);
-		await c.env.db
-			.prepare(`UPDATE setting SET notice_content = ? WHERE notice_content = '';`)
-			.bind(noticeContent)
-			.run();
-
+		await c.env.db.prepare(`UPDATE setting SET notice_content = ? WHERE notice_content = '';`).bind(noticeContent).run();
 		try {
 			await c.env.db.batch([
 				c.env.db.prepare(`DROP INDEX IF EXISTS idx_account_email`),
@@ -97,7 +95,10 @@ const init = {
 				c.env.db.prepare(`CREATE UNIQUE INDEX IF NOT EXISTS idx_account_email_nocase ON account (email COLLATE NOCASE)`),
 				c.env.db.prepare(`CREATE UNIQUE INDEX IF NOT EXISTS idx_user_email_nocase ON user (email COLLATE NOCASE)`)
 			]);
-		} catch {}
+		} catch (e) {
+			console.error(e.message)
+		}
+
 	},
 
 	async v1_5DB(c) {
