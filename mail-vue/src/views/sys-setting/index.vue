@@ -332,7 +332,7 @@
               <div class="concerning-item">
                 <span>{{ $t('version') }} :</span>
                 <el-badge is-dot :hidden="!hasUpdate">
-                  <el-button @click="jump(https://lin.ee/BXLqRNUl')">
+                  <el-button @click="jump('https://lin.ee/BXLqRNU')">
                     {{ currentVersion }}
                     <template #icon>
                       <Icon icon="qlementine-icons:version-control-16" style="font-size: 20px" color="#1890FF"/>
