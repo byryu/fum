@@ -50,9 +50,18 @@ const init = {
 	},
 
 	async v1_6DB(c) {
-		const noticeContent = '禁止非法使用\n' +
+
+		const noticeContent = '本项目仅供学习交流，禁止用于违法业务\n' +
 			'<br>\n' +
-			'請遵守當地法規，作者不承擔任何法律責任\n';
+			'请遵守当地法规，作者不承担任何法律责任\n' +
+			'<div style="display: flex;gap: 18px;margin-top: 10px;">\n' +
+			'<a href="https://github.com/eoao/cloud-mail" target="_blank" >\n' +
+			'<img src="https://api.iconify.design/codicon:github-inverted.svg" alt="GitHub" width="25" height="25" />\n' +
+			'</a>\n' +
+			'<a href="https://t.me/cloud_mail_tg" target="_blank" >\n' +
+			'<img src="https://api.iconify.design/logos:telegram.svg" alt="GitHub" width="25" height="25" />\n' +
+			'</a>\n' +
+			'</div>\n'
 
 		const ADD_COLUMN_SQL_LIST = [
 			`ALTER TABLE setting ADD COLUMN reg_verify_count INTEGER NOT NULL DEFAULT 1;`,
@@ -296,36 +305,35 @@ const init = {
 		if (permTotal === 0) {
 			await c.env.db.prepare(`
         INSERT INTO perm (perm_id, name, perm_key, pid, type, sort) VALUES
-        (1, '郵件', NULL, 0, 0, 0),
-		(2, '郵件刪除', 'email:delete', 1, 2, 1),
-		(3, '郵件發送', 'email:send', 1, 2, 0),
-		(4, '個人設定', '', 0, 1, 2),
-		(5, '使用者註銷', 'my:delete', 4, 2, 0),
-		(6, '使用者資訊', NULL, 0, 1, 3),
-		(7, '使用者查看', 'user:query', 6, 2, 0),
-		(8, '密碼修改', 'user:set-pwd', 6, 2, 2),
-		(9, '狀態修改', 'user:set-status', 6, 2, 3),
-		(10, '權限修改', 'user:set-type', 6, 2, 4),
-		(11, '使用者刪除', 'user:delete', 6, 2, 7),
-		(12, '使用者收藏', 'user:star', 6, 2, 5),
-		(13, '權限控制', '', 0, 1, 5),
-		(14, '身份查看', 'role:query', 13, 2, 0),
-		(15, '身份修改', 'role:set', 13, 2, 1),
-		(16, '身份刪除', 'role:delete', 13, 2, 2),
-		(17, '系統設定', '', 0, 1, 6),
-		(18, '設定查看', 'setting:query', 17, 2, 0),
-		(19, '設定修改', 'setting:set', 17, 2, 1),
-		(21, '信箱側欄', '', 0, 0, 1),
-		(22, '信箱查看', 'account:query', 21, 2, 0),
-		(23, '信箱新增', 'account:add', 21, 2, 1),
-		(24, '信箱刪除', 'account:delete', 21, 2, 2),
-		(25, '使用者新增', 'user:add', 6, 2, 1),
-		(26, '發件重置', 'user:reset-send', 6, 2, 6),
-		(27, '郵件列表', '', 0, 1, 4),
-		(28, '郵件查看', 'all-email:query', 27, 2, 0),
-		(29, '郵件刪除', 'all-email:delete', 27, 2, 0),
-				(30, '身份新增', 'role:add', 13, 2, -1)
-
+        (1, '邮件', NULL, 0, 0, 0),
+        (2, '邮件删除', 'email:delete', 1, 2, 1),
+        (3, '邮件发送', 'email:send', 1, 2, 0),
+        (4, '个人设置', '', 0, 1, 2),
+        (5, '用户注销', 'my:delete', 4, 2, 0),
+        (6, '用户信息', NULL, 0, 1, 3),
+        (7, '用户查看', 'user:query', 6, 2, 0),
+        (8, '密码修改', 'user:set-pwd', 6, 2, 2),
+        (9, '状态修改', 'user:set-status', 6, 2, 3),
+        (10, '权限修改', 'user:set-type', 6, 2, 4),
+        (11, '用户删除', 'user:delete', 6, 2, 7),
+        (12, '用户收藏', 'user:star', 6, 2, 5),
+        (13, '权限控制', '', 0, 1, 5),
+        (14, '身份查看', 'role:query', 13, 2, 0),
+        (15, '身份修改', 'role:set', 13, 2, 1),
+        (16, '身份删除', 'role:delete', 13, 2, 2),
+        (17, '系统设置', '', 0, 1, 6),
+        (18, '设置查看', 'setting:query', 17, 2, 0),
+        (19, '设置修改', 'setting:set', 17, 2, 1),
+        (21, '邮箱侧栏', '', 0, 0, 1),
+        (22, '邮箱查看', 'account:query', 21, 2, 0),
+        (23, '邮箱添加', 'account:add', 21, 2, 1),
+        (24, '邮箱删除', 'account:delete', 21, 2, 2),
+        (25, '用户添加', 'user:add', 6, 2, 1),
+        (26, '发件重置', 'user:reset-send', 6, 2, 6),
+        (27, '邮件列表', '', 0, 1, 4),
+        (28, '邮件查看', 'all-email:query', 27, 2, 0),
+        (29, '邮件删除', 'all-email:delete', 27, 2, 0),
+				(30, '身份添加', 'role:add', 13, 2, -1)
       `).run();
 		}
 
@@ -354,7 +362,7 @@ const init = {
         INSERT INTO role (
           role_id, name, key, create_time, sort, description, user_id, is_default, send_count, send_type, account_count
         ) VALUES (
-          1, '普通用户', NULL, '0000-00-00 00:00:00', 0, '只有普通權限', 0, 1, NULL, 'ban', 10
+          1, '普通用户', NULL, '0000-00-00 00:00:00', 0, '只有普通使用权限', 0, 1, NULL, 'ban', 10
         )
       `).run();
 		}
