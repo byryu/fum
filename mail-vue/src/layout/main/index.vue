@@ -35,7 +35,7 @@ watch(() => uiStore.changeNotice, () => {
   let data = {
     notice: settings.notice,
     noticeWidth: settings.noticeWidth,
-    noticeTitle: "Yu mail"
+    noticeTitle: "Yu mail",
     noticeContent: "請勿進行非法行為",
     noticeType: settings.noticeType,
     noticeDuration: settings.noticeDuration,
