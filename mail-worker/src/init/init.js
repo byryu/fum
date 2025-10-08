@@ -54,51 +54,10 @@ const init = {
 			'<br>\n' +
 			'請遵守當地法規，作者不承擔任何法律責任\n';
 
-		const ADD_COLUMN_SQL_LIST = [
-			`ALTER TABLE setting ADD COLUMN reg_verify_count INTEGER NOT NULL DEFAULT 1;`,
-			`ALTER TABLE setting ADD COLUMN add_verify_count INTEGER NOT NULL DEFAULT 1;`,
-			`CREATE TABLE IF NOT EXISTS verify_record (
-				vr_id INTEGER PRIMARY KEY AUTOINCREMENT,
-				ip TEXT NOT NULL DEFAULT '',
-				count INTEGER NOT NULL DEFAULT 1,
-				type INTEGER NOT NULL DEFAULT 0,
-				update_time DATETIME DEFAULT CURRENT_TIMESTAMP
-      )`,
-			`ALTER TABLE setting ADD COLUMN notice_title TEXT NOT NULL DEFAULT 'Cloud Mail';`,
-			`ALTER TABLE setting ADD COLUMN notice_content TEXT NOT NULL DEFAULT '';`,
-			`ALTER TABLE setting ADD COLUMN notice_type TEXT NOT NULL DEFAULT 'none';`,
-			`ALTER TABLE setting ADD COLUMN notice_duration INTEGER NOT NULL DEFAULT 0;`,
-			`ALTER TABLE setting ADD COLUMN notice_offset INTEGER NOT NULL DEFAULT 0;`,
-			`ALTER TABLE setting ADD COLUMN notice_position TEXT NOT NULL DEFAULT 'top-right';`,
-			`ALTER TABLE setting ADD COLUMN notice_width INTEGER NOT NULL DEFAULT 340;`,
-			`ALTER TABLE setting ADD COLUMN notice INTEGER NOT NULL DEFAULT 0;`,
-			`ALTER TABLE setting ADD COLUMN no_recipient INTEGER NOT NULL DEFAULT 1;`,
-			`UPDATE role SET avail_domain = '' WHERE role.avail_domain LIKE '@%';`,
-			`UPDATE role SET ban_email = '';`,
-			`CREATE INDEX IF NOT EXISTS idx_email_user_id_account_id ON email(user_id, account_id);`
-		];
-
-		const promises = ADD_COLUMN_SQL_LIST.map(async (sql) => {
-			try {
-				await c.env.db.prepare(sql).run();
-			} catch (e) {
-				console.warn(`通过字段，原因：${e.message}`);
-			}
-		});
-
-		await Promise.all(promises);
-		await c.env.db.prepare(`UPDATE setting SET notice_content = ? WHERE notice_content = '';`).bind(noticeContent).run();
-		try {
-			await c.env.db.batch([
-				c.env.db.prepare(`DROP INDEX IF EXISTS idx_account_email`),
-				c.env.db.prepare(`DROP INDEX IF EXISTS idx_user_email`),
-				c.env.db.prepare(`CREATE UNIQUE INDEX IF NOT EXISTS idx_account_email_nocase ON account (email COLLATE NOCASE)`),
-				c.env.db.prepare(`CREATE UNIQUE INDEX IF NOT EXISTS idx_user_email_nocase ON user (email COLLATE NOCASE)`)
-			]);
-		} catch (e) {
-			console.error(e.message)
-		}
-
+		await c.env.db
+			.prepare(`UPDATE setting SET notice_content = ? WHERE notice_content = '';`)
+			.bind(noticeContent)
+			.run();
 	},
 
 	async v1_5DB(c) {
