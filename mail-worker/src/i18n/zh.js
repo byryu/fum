@@ -59,7 +59,7 @@ const zh = {
 	noDomainPermReg: '你沒有權限註冊該網域的信箱',
 	noDomainPermRegKey: '你的註冊碼無權註冊該網域的信箱',
 	noDomainPermSend: '你沒有權限使用該網域的信箱發送郵件',
-	JWTMismatch: 'jwt_secret 不匹配',
+	JWTMismatch: 'jwt_secret不匹配',
 	publicTokenFail: 'Token 驗證失敗',
 	notAdmin: '輸入的信箱不是管理員信箱',
 	emailExistDatabase: '有信箱已存在於資料庫中',
